@@ -6,6 +6,15 @@ public class ScoreCard {
     private Integer score;
     private boolean isWinner;
     private String displayScore;
+    private boolean hasAdvantagePoint;
+
+    public boolean hasAdvantagePoint() {
+        return hasAdvantagePoint;
+    }
+
+    public void setAdvantagePoint(boolean hasAdvantagePoint) {
+        this.hasAdvantagePoint = hasAdvantagePoint;
+    }
 
     public String getDisplayScore() {
         return displayScore;

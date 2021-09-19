@@ -1,13 +1,14 @@
 package com.game.tennis.score.service;
 
+import com.game.tennis.score.ApplicationProperties;
 import com.game.tennis.score.dto.GameScoreInput;
 import com.game.tennis.score.dto.PlayerPoint;
 import com.game.tennis.score.dto.ScoreCard;
-import com.sun.istack.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
@@ -16,94 +17,86 @@ public class GameScoreServiceImpl implements GameScoreService {
     // Key is Player Key, Score card is player score.
     Map<String, ScoreCard> scoreCards = new HashMap<>();
     Map<String, List<ScoreCard>> gameScoreCards = new HashMap<>();
-    private static List<String> displayScoreList = new ArrayList();
+    Map<String, String> gameRule = new HashMap();
 
-    @PostConstruct
-    public void init() {
-        displayScoreList.add("0");
-        displayScoreList.add("15");
-        displayScoreList.add("30");
-        displayScoreList.add("40");
-        displayScoreList.add("Won Game");
-    }
+    @Autowired private ApplicationProperties applicationProperties;
+
+    @Autowired private  ApplicationContext applicationContext;
+
 
     private List<ScoreCard> starGame(List<PlayerPoint> playerPoints, String gameName) {
         if (CollectionUtils.isEmpty(playerPoints)) {
             throw new RuntimeException("Player details needs to required to start the game");
         }
         playerPoints.stream().forEach(playerPoint -> {
-            scoreCards.put(playerPoint.getPlayerID(), new ScoreCard(gameName, playerPoint.getPlayerID(), 0));
+            ScoreCard scoreCard = new ScoreCard(gameName, playerPoint.getPlayerID(), 0);
+            scoreCard.setDisplayScore("0");
+            scoreCards.put(playerPoint.getPlayerID(), scoreCard);
         });
         List<ScoreCard> updatedScoreCards = new ArrayList<>(scoreCards.values());
         gameScoreCards.put(gameName, updatedScoreCards);
 
         return updatedScoreCards;
-    }
-
-    private List<ScoreCard> updateGameScore(PlayerPoint playerPoint, String gameName) {
-
-        if (!scoreCards.containsKey(playerPoint.getPlayerID())) {
-            throw new RuntimeException("Player details needs to required to start the game");
-        }
-        scoreCards.get(playerPoint.getPlayerID())
-                .setScore(scoreCards.get(playerPoint.getPlayerID()).getScore() + 1);
-
-        List<ScoreCard> updatedScoreCards = new ArrayList<>(scoreCards.values());
-
-        gameScoreCards.put(gameName, updatedScoreCards);
-
-        return updatedScoreCards;
-    }
-
-    @Override
-    public List<ScoreCard> evaluateGameResult(@NotNull List<ScoreCard> scoreCards) {
-        if (scoreCards != null && scoreCards.size() != 2) {
-            throw new RuntimeException("Invalid Inputs for Game Result Evaluation");
-        }
-
-        ScoreCard player1 = scoreCards.get(0);
-        ScoreCard player2 = scoreCards.get(1);
-
-        if (player1.isWinner() || player2.isWinner()) {
-            throw new RuntimeException("Winner is Already Determined");
-        }
-
-        if ((player1.getScore().compareTo(player2.getScore()) == 1) && player1.getScore() == 4) {
-            // Player 1 Won the game
-             player1.setWinner(true);
-        }
-        else if ((player2.getScore().compareTo(player1.getScore()) == 1) && player2.getScore() == 4) {
-            // Player 2 Won the game
-            player2.setWinner(true);
-        }
-
-       return scoreCards;
-
-    }
-
-    private List<ScoreCard> transformScore(List<ScoreCard> scoreCards) {
-        scoreCards.stream().forEach(scoreCard -> {
-            scoreCard.setDisplayScore(displayScoreList.get(scoreCard.getScore()));
-        });
-
-        return  scoreCards;
     }
 
     @Override
     public List<ScoreCard> processGameScore(GameScoreInput scoreInput) {
+        String gameName = scoreInput.getGameName();
+
         PlayerPoint point = scoreInput.getPlayerPoints().
                 stream().filter
                 (i -> i.isPointSecured()).findFirst().orElse(null);
+
         List<ScoreCard> scoreCards = new ArrayList<>();
+
+        GameRuleService ruleService = (NormalRuleImpl)
+                applicationContext.getBean("normalRule");
+
         // If no one secured a point i.e we are starting the game.
         if (point == null) {
-            scoreCards = starGame(scoreInput.getPlayerPoints(), scoreInput.getGameName());
+            scoreCards = starGame(scoreInput.getPlayerPoints(), gameName);
+            return scoreCards;
         } else {
-            scoreCards = updateGameScore(point, scoreInput.getGameName());
+            // verify if we need to Trigger DeuceRule or not,
+            // and determine the ruleImpl Runtime
+            if (triggerDeuceOrNot(gameScoreCards.get(gameName))) {
+                ruleService = (DeuceRuleImpl)
+                        applicationContext.getBean("deuceRule");
+                return ruleService.processSecuredPoint(point, gameName);
+            } else {
+                scoreCards = ruleService.processSecuredPoint(point, gameName);
+
+                if (triggerDeuceOrNot(scoreCards)) {
+                    activateDeuceRule(scoreCards);
+                }
+                return scoreCards;
+            }
         }
-
-        evaluateGameResult(scoreCards);
-
-        return transformScore(scoreCards);
     }
+
+    /**
+     * Avivating Deuce Rule by setting Both Player Scores to "DEUCE"
+     * @param scoreCards
+     */
+    private void activateDeuceRule(List<ScoreCard> scoreCards) {
+        scoreCards.stream().forEach(sc-> {
+            sc.setDisplayScore("Deuce");
+        });
+    }
+
+    @Override
+    public List<ScoreCard> getScoreCardByGame(String gameName) {
+        return gameScoreCards.get(gameName);
+    }
+
+    /**
+     * Method to verify to verify if we need to trigger Deuce Rule or not.
+     * @param scoreCards
+     * @return
+     */
+    private boolean triggerDeuceOrNot(List<ScoreCard> scoreCards) {
+        return applicationProperties.getDeuceEnabled() &&
+                scoreCards.get(0).getScore() == 3 && scoreCards.get(1).getScore() == 3;
+    }
+
 }

@@ -25,6 +25,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 	public static final String PLAYER_1 = "Player1";
 	public static final String PLAYER_2 = "Player2";
+	public static final String SET_3 = "Set3";
 	@Autowired
 	@InjectMocks
 	TennisSetMatchServiceImpl setMatchService;
@@ -42,7 +43,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 		//Start First Game
 		List<PlayerPoint> playerPoints = getPlayerPointsForNewGame();
 
-		SetMatchScoreInput gameScoreInput = new SetMatchScoreInput(playerPoints, "FirstGame", "Set2");
+		SetMatchScoreInput gameScoreInput = new SetMatchScoreInput(playerPoints, "FirstGame", SET_3);
 		List<SetMatchScoreCard> scoreCards = makePlayer1WinGame(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);
@@ -53,7 +54,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 		// Start Second Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "SecondGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "SecondGame", SET_3);
 		scoreCards = makePlayer1WinGame(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);
@@ -64,7 +65,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 		// Start Third Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "ThirdGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "ThirdGame", SET_3);
 
 		scoreCards = makePlayer2WinGame(gameScoreInput);
 
@@ -76,7 +77,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 		// Start Fourth Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "FourthGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "FourthGame", SET_3);
 		scoreCards = makePlayer1WinGame(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);
@@ -87,7 +88,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 		// Start Fifth Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "FifthGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "FifthGame", SET_3);
 		scoreCards = makePlayer1WinGame(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);
@@ -98,7 +99,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 		// Start Sixth Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "SixthGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "SixthGame", SET_3);
 		scoreCards = makePlayer1WinGame(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);
@@ -113,7 +114,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 		// Start Seventh Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "SeventhGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "SeventhGame", SET_3);
 		scoreCards = makePlayer2WinGame(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);
@@ -124,22 +125,22 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 		// Start Eighth Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "EighthGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "EighthGame", SET_3);
 		scoreCards = makePlayer2WinGame(gameScoreInput);
 
 		// Start Ninth Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "NinthGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "NinthGame", SET_3);
 		scoreCards = makePlayer2WinGame(gameScoreInput);
 
 		// Start 10th Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "10ThGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "10ThGame", SET_3);
 		scoreCards = makePlayer2WinGame(gameScoreInput);
 
 		// Start 11th Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "11ThGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "11ThGame", SET_3);
 		scoreCards = makePlayer1WinGame(gameScoreInput);
 
 		Assertions.assertFalse(getScoreCardForPlayer(scoreCards, PLAYER_1).isWinner(),
@@ -148,7 +149,7 @@ class TennisScoreWithSetMatchTieBreakTests {
 
 		// Start 12th Game
 		playerPoints = getPlayerPointsForNewGame();
-		gameScoreInput = new SetMatchScoreInput(playerPoints, "12ThGame", "Set2");
+		gameScoreInput = new SetMatchScoreInput(playerPoints, "12ThGame", SET_3);
 		scoreCards = makePlayer2WinGame(gameScoreInput);
 
 		// Assert Either player is a Winner, i.e Tie-Break RULE IS ACTIVATED

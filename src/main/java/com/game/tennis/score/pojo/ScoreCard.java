@@ -1,4 +1,4 @@
-package com.game.tennis.score.dto;
+package com.game.tennis.score.pojo;
 
 public class ScoreCard {
     private String gameName;

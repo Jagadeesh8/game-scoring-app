@@ -1,7 +1,6 @@
-package com.game.tennis.score.dto;
+package com.game.tennis.score.pojo;
 
 import java.util.List;
-import java.util.Map;
 
 public class GameScoreInput {
     private List<PlayerPoint> playerPoints;

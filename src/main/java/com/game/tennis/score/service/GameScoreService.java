@@ -1,7 +1,8 @@
 package com.game.tennis.score.service;
 
-import com.game.tennis.score.dto.GameScoreInput;
-import com.game.tennis.score.dto.ScoreCard;
+import com.game.tennis.score.pojo.GameScoreInput;
+import com.game.tennis.score.pojo.ScoreCard;
+import com.game.tennis.score.pojo.SetMatchScoreInput;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface GameScoreService {
      * @return
      */
     public List<ScoreCard> getScoreCardByGame(String gameName);
+
 }

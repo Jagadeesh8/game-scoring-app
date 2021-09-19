@@ -1,9 +1,9 @@
 package com.game.tennis.score.service;
 
 import com.game.tennis.score.ApplicationProperties;
-import com.game.tennis.score.dto.GameScoreInput;
-import com.game.tennis.score.dto.PlayerPoint;
-import com.game.tennis.score.dto.ScoreCard;
+import com.game.tennis.score.pojo.GameScoreInput;
+import com.game.tennis.score.pojo.PlayerPoint;
+import com.game.tennis.score.pojo.ScoreCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.*;
 
 @Service
-public class GameScoreServiceImpl implements GameScoreService {
+public class TennisGameScoreServiceImpl implements GameScoreService {
 
     // Key is Player Key, Score card is player score.
     Map<String, ScoreCard> scoreCards = new HashMap<>();
@@ -49,14 +49,13 @@ public class GameScoreServiceImpl implements GameScoreService {
 
         List<ScoreCard> scoreCards = new ArrayList<>();
 
-        GameRuleService ruleService = (NormalRuleImpl)
-                applicationContext.getBean("normalRule");
-
         // If no one secured a point i.e we are starting the game.
         if (point == null) {
             scoreCards = starGame(scoreInput.getPlayerPoints(), gameName);
             return scoreCards;
         } else {
+            GameRuleService ruleService = (NormalRuleImpl)
+                    applicationContext.getBean("normalRule");
             // verify if we need to Trigger DeuceRule or not,
             // and determine the ruleImpl Runtime
             if (triggerDeuceOrNot(gameScoreCards.get(gameName))) {

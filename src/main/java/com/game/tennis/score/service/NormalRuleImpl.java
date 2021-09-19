@@ -1,7 +1,7 @@
 package com.game.tennis.score.service;
 
-import com.game.tennis.score.dto.PlayerPoint;
-import com.game.tennis.score.dto.ScoreCard;
+import com.game.tennis.score.pojo.PlayerPoint;
+import com.game.tennis.score.pojo.ScoreCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.game.tennis.score.dto;
+package com.game.tennis.score.pojo;
 
 public class PlayerPoint {
     private String playerID;

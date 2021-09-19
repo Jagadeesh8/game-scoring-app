@@ -1,9 +1,9 @@
 package com.game.tennis.score;
 
-import com.game.tennis.score.dto.GameScoreInput;
-import com.game.tennis.score.dto.PlayerPoint;
-import com.game.tennis.score.dto.ScoreCard;
-import com.game.tennis.score.service.GameScoreServiceImpl;
+import com.game.tennis.score.pojo.GameScoreInput;
+import com.game.tennis.score.pojo.PlayerPoint;
+import com.game.tennis.score.pojo.ScoreCard;
+import com.game.tennis.score.service.TennisGameScoreServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class TennisScoreWithDeuceTests {
 
 	@Autowired
 	@InjectMocks
-	GameScoreServiceImpl gameScoreService;
+	TennisGameScoreServiceImpl gameScoreService;
 
 	@Mock ApplicationProperties applicationProperties;
 

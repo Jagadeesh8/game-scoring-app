@@ -1,10 +1,19 @@
-package com.game.tennis.score.dto;
+package com.game.tennis.score.pojo;
 
 public class SetMatchScoreCard {
     private String playerID;
     private ScoreCard scoreCard; // Current Game Score Card
     private Integer setScore;
     private boolean winner;
+    private Integer tieBreakScore;
+
+    public Integer getTieBreakScore() {
+        return tieBreakScore;
+    }
+
+    public void setTieBreakScore(Integer tieBreakScore) {
+        this.tieBreakScore = tieBreakScore;
+    }
 
     public boolean isWinner() {
         return winner;
@@ -47,9 +56,12 @@ public class SetMatchScoreCard {
     @Override
     public String toString() {
         return "SetMatchScoreCard{" +
-                "playerId='" + playerID + '\'' +
+                "playerID='" + playerID + '\'' +
                 ", scoreCard=" + scoreCard +
                 ", setScore=" + setScore +
+                ", winner=" + winner +
+                ", tieBreakScore=" + tieBreakScore +
                 '}';
     }
+
 }

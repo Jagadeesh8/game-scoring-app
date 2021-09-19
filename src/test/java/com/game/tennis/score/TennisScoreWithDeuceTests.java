@@ -169,7 +169,7 @@ class TennisScoreWithDeuceTests {
 		List<PlayerPoint> playerPoints = new ArrayList<>();
 		playerPoints.add(new PlayerPoint("Player1", false));
 		playerPoints.add(new PlayerPoint("Player2", false));
-		GameScoreInput gameScoreInput = new GameScoreInput(playerPoints, "SecondGame");
+		GameScoreInput gameScoreInput = new GameScoreInput(playerPoints, "ThirdGame");
 		List<ScoreCard> scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);
@@ -253,7 +253,7 @@ class TennisScoreWithDeuceTests {
 		List<PlayerPoint> playerPoints = new ArrayList<>();
 		playerPoints.add(new PlayerPoint("Player1", false));
 		playerPoints.add(new PlayerPoint("Player2", false));
-		GameScoreInput gameScoreInput = new GameScoreInput(playerPoints, "SecondGame");
+		GameScoreInput gameScoreInput = new GameScoreInput(playerPoints, "FourthGame");
 		List<ScoreCard> scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);
@@ -357,7 +357,7 @@ class TennisScoreWithDeuceTests {
 		List<PlayerPoint> playerPoints = new ArrayList<>();
 		playerPoints.add(new PlayerPoint("Player1", false));
 		playerPoints.add(new PlayerPoint("Player2", false));
-		GameScoreInput gameScoreInput = new GameScoreInput(playerPoints, "SecondGame");
+		GameScoreInput gameScoreInput = new GameScoreInput(playerPoints, "FifthGame");
 		List<ScoreCard> scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
 		Assertions.assertNotNull(scoreCards);

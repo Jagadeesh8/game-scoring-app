@@ -36,6 +36,28 @@ class TennisScoreWithDeuceTests {
 	}
 
 	@Test
+	void testSampleInputWithPlayer1gettingApoint() {
+		List<PlayerPoint> playerPoints = new ArrayList<>();
+		playerPoints.add(new PlayerPoint("Player1", false));
+		playerPoints.add(new PlayerPoint("Player2", false));
+		GameScoreInput gameScoreInput = new GameScoreInput(playerPoints, "SampleGame");
+		List<ScoreCard> scoreCards = gameScoreService.processGameScore(gameScoreInput);
+
+		Assertions.assertNotNull(scoreCards);
+
+		PlayerPoint playerOne = playerPoints.get(0);
+		PlayerPoint playerTwo = playerPoints.get(1);
+
+		// secure a point for player 1 and assert
+		setPlayerPoint(playerOne, playerTwo, true, false);
+
+		scoreCards = gameScoreService.processGameScore(gameScoreInput);
+
+		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
+		Assertions.assertEquals("0", getScoreCardForPlayer(scoreCards, "Player2").getDisplayScore());
+	}
+
+		@Test
 	void makePlayer1Win() {
 		List<PlayerPoint> playerPoints = new ArrayList<>();
 		playerPoints.add(new PlayerPoint("Player1", false));
@@ -48,51 +70,34 @@ class TennisScoreWithDeuceTests {
 		PlayerPoint playerOne = playerPoints.get(0);
 		PlayerPoint playerTwo = playerPoints.get(1);
 
-		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		// secure a point for player 1
+			setPlayerPoint(playerOne, playerTwo, true, false);
 
-		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("0", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
+			scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
 		// secure a point for player 2 and assert
-		playerOne.setPointSecured(false);
-		playerTwo.setPointSecured(true);
-		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
+			setPlayerPoint(playerOne, playerTwo, false, true);
+			scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+			setPlayerPoint(playerOne, playerTwo, true, false);
 
-		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
+			scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+			setPlayerPoint(playerOne, playerTwo, true, false);
 
-		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-		Assertions.assertEquals("40", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
+			scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+			setPlayerPoint(playerTwo, playerOne, true, false);
 
-		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-		Assertions.assertEquals("40", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
+			scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
 		// secure a point for player 1 and Make WIN
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+			setPlayerPoint(playerOne, playerTwo, true, false);
 
-		scoreCards = gameScoreService.processGameScore(gameScoreInput);
+			scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("Won Game", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
@@ -113,49 +118,31 @@ class TennisScoreWithDeuceTests {
 		PlayerPoint playerTwo = playerPoints.get(1);
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("0", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2 and assert
-		playerOne.setPointSecured(false);
-		playerTwo.setPointSecured(true);
+		setPlayerPoint(playerOne, playerTwo, false, true);
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
-
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
-		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
-		Assertions.assertEquals("40", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
-
+		
 		// secure a point for player 2
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
@@ -178,8 +165,7 @@ class TennisScoreWithDeuceTests {
 		PlayerPoint playerTwo = playerPoints.get(1);
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
@@ -187,15 +173,13 @@ class TennisScoreWithDeuceTests {
 		Assertions.assertEquals("0", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2 and assert
-		playerOne.setPointSecured(false);
-		playerTwo.setPointSecured(true);
+		setPlayerPoint(playerOne, playerTwo, false, true);
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
@@ -203,32 +187,28 @@ class TennisScoreWithDeuceTests {
 
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("40", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1 and Assert Such that Both has display score of Deuce.
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("Deuce", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("Deuce", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1 and Assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
@@ -238,8 +218,7 @@ class TennisScoreWithDeuceTests {
 		Assertions.assertTrue(getScoreCardForPlayer(scoreCards,"Player1").hasAdvantagePoint());
 
 		// secure another point for player 1 and Make Winner
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
@@ -262,8 +241,7 @@ class TennisScoreWithDeuceTests {
 		PlayerPoint playerOne = playerPoints.get(0);
 		PlayerPoint playerTwo = playerPoints.get(1);
 
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
@@ -271,15 +249,13 @@ class TennisScoreWithDeuceTests {
 		Assertions.assertEquals("0", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2 and assert
-		playerOne.setPointSecured(false);
-		playerTwo.setPointSecured(true);
+		setPlayerPoint(playerOne, playerTwo, false, true);
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
@@ -287,32 +263,28 @@ class TennisScoreWithDeuceTests {
 
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("40", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1 and Assert Such that Both has display score of Deuce.
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("Deuce", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("Deuce", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1 and Assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
@@ -322,8 +294,7 @@ class TennisScoreWithDeuceTests {
 		Assertions.assertTrue(getScoreCardForPlayer(scoreCards,"Player1").hasAdvantagePoint());
 
 		// secure another point for player 2 and Make Both Players to Deuce
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
@@ -332,8 +303,7 @@ class TennisScoreWithDeuceTests {
 		Assertions.assertFalse(getScoreCardForPlayer(scoreCards,"Player1").hasAdvantagePoint());
 
 		// secure another point for player 1 and attain advantage
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("Advantage", getScoreCardForPlayer(scoreCards,"Player1").getDisplayScore());
@@ -341,8 +311,7 @@ class TennisScoreWithDeuceTests {
 		Assertions.assertTrue(getScoreCardForPlayer(scoreCards,"Player1").hasAdvantagePoint());
 
 		// secure another point for player 1 and make Winner
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("Win Game", getScoreCardForPlayer(scoreCards,"Player1").getDisplayScore());
@@ -366,8 +335,7 @@ class TennisScoreWithDeuceTests {
 		PlayerPoint playerTwo = playerPoints.get(1);
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 
@@ -375,15 +343,13 @@ class TennisScoreWithDeuceTests {
 		Assertions.assertEquals("0", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2 and assert
-		playerOne.setPointSecured(false);
-		playerTwo.setPointSecured(true);
+		setPlayerPoint(playerOne, playerTwo, false, true);
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("15", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1 and assert
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
@@ -391,32 +357,28 @@ class TennisScoreWithDeuceTests {
 
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2 and assert
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("40", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 2
-		playerTwo.setPointSecured(true);
-		playerOne.setPointSecured(false);
+		setPlayerPoint(playerTwo, playerOne, true, false);
 
 		scoreCards = gameScoreService.processGameScore(gameScoreInput);
 		Assertions.assertEquals("30", getScoreCardForPlayer(scoreCards, "Player1").getDisplayScore());
 		Assertions.assertEquals("Won Game", getScoreCardForPlayer(scoreCards,"Player2").getDisplayScore());
 
 		// secure a point for player 1
-		playerOne.setPointSecured(true);
-		playerTwo.setPointSecured(false);
+		setPlayerPoint(playerOne, playerTwo, true, false);
 
 		// ThoughOne Player Won the game we are trying
 		// update score for a player which s invalid so we need to throw an exception.
@@ -426,13 +388,31 @@ class TennisScoreWithDeuceTests {
 
 	}
 
+	/**
+	 * Get Score card by player ID.
+	 * @param scoreCards
+	 * @param player
+	 * @return
+	 */
 	private  ScoreCard getScoreCardForPlayer(List<ScoreCard> scoreCards, String player) {
 
 		return scoreCards.stream().filter(scoreCard -> {
 			return scoreCard.getPlayerID().equals(player);
 		}).findFirst().orElse(null);
 
-
 	}
+
+	/**
+	 * Sets Point for the player
+	 * @param playerOne
+	 * @param playerTwo
+	 * @param playerOnePoint
+	 * @param playerTwoPoint
+	 */
+	private void setPlayerPoint(PlayerPoint playerOne, PlayerPoint playerTwo, boolean playerOnePoint, boolean playerTwoPoint) {
+		playerOne.setPointSecured(playerOnePoint);
+		playerTwo.setPointSecured(playerTwoPoint);
+	}
+
 
 }

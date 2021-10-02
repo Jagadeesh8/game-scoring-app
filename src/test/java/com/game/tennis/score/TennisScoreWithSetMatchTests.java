@@ -260,7 +260,7 @@ class TennisScoreWithSetMatchTests {
 
 		List<SetMatchScoreCard> scoreCards = setMatchService.processSetMatchGamePoint(gameScoreInput);
 
-		// secure a playerOne for player 1 and assert
+		// secure a Point for player 1 and assert
 		playerOne.setPointSecured(true);
 		playerTwo.setPointSecured(false);
 
@@ -290,7 +290,7 @@ class TennisScoreWithSetMatchTests {
 		PlayerPoint playerTwo = gameScoreInput.getPlayerPoints().get(1);
 		List<SetMatchScoreCard> scoreCards = setMatchService.processSetMatchGamePoint(gameScoreInput);
 
-		// secure a playerOne for player 1 and assert
+		// secure a Point for player 1 and assert
 		playerOne.setPointSecured(false);
 		playerTwo.setPointSecured(true);
 
